@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+
+    mariadb:
+        image: 'mariadb:10.1'
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=my-secret-pw
+            - MYSQL_USER=wowstack
+            - MYSQL_PASSWORD=p4ssw0rd
+            - MYSQL_DATABASE=wowstack_realm
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+            timeout: "20s"
+            retries: 10
+        ports:
+            - 3306:3306
+        volumes:
+            - 'mariadb_data:/var/lib/mysql'
+
+    auth_server:
+        image: 'wowstack/auth-server:latest'
+        restart: always
+        environment:
+            - WOWSTACK_APP_NAME=classic-server
+            - WOWSTACK_AUTH_DB_HOST=mariadb
+            - WOWSTACK_AUTH_DB_PORT=3306
+            - WOWSTACK_AUTH_DB_USERNAME=wowstack
+            - WOWSTACK_AUTH_DB_PASSWORD=p4ssw0rd
+            - WOWSTACK_AUTH_DB_DATABASE=wowstack_realm
+            - WOWSTACK_AUTH_BIND_IP=0.0.0.0
+            - WOWSTACK_AUTH_BIND_PORT=3724
+        depends_on:
+            - mariadb
+        ports:
+            - 3724:3724
+        volumes:
+        - 'wowstack_auth_config:/opt/wowstack/etc'
+
+volumes:
+    mariadb_data:
+        driver: local
+    wowstack_auth_config:
+        driver: local
