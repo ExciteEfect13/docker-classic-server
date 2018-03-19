@@ -15,6 +15,20 @@ of World of Warcraft using client 1.12.x (in your prefered locale).
 - [x] Provision Vanilla WoW authentication server
 - [x] Configure authentication server on startup
 - [ ] Provision authentication database and content on startup
+- [x] Provision Vanilla WoW game world server
+- [x] Configure game world server on startup
+- [ ] Provision game world database and content on startup
+
+## Docker images
+
+All Docker images are available on the Docker Hub, and updated frequently.
+
+- [Map tools](https://hub.docker.com/r/wowstack/map-tools/)
+- [Authentication server](https://hub.docker.com/r/wowstack/auth-server/)
+- [Game World server](https://hub.docker.com/r/wowstack/world-server/)
+
+Since this is a work in progress project, we highly recommend to frequently
+run `docker-compose pull` before running the containers (at least weekly).
 
 ## Requirements
 
