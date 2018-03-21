@@ -40,7 +40,7 @@ services:
         networks:
             - wowstack
         volumes:
-        - "wowstack_config:/opt/wowstack/etc"
+        - "wowstack_auth_config:/opt/wowstack/etc"
 
     world_server:
         image: wowstack/world-server:latest
@@ -68,14 +68,15 @@ services:
             - "WOWSTACK_CHAR_DB_DATABASE=wowstack_characters"
         depends_on:
             - mariadb
+            - auth_server
         links:
             - mariadb:mysql
         ports:
-            - "3724:3724"
+            - "8085:8085"
         networks:
             - wowstack
         volumes:
-        - "wowstack_config:/opt/wowstack/etc"
+        - "wowstack_world_config:/opt/wowstack/etc"
 
 networks:
     wowstack:
@@ -84,5 +85,7 @@ networks:
 volumes:
     mariadb_data:
         driver: local
-    wowstack_config:
+    wowstack_auth_config:
+        driver: local
+    wowstack_world_config:
         driver: local
