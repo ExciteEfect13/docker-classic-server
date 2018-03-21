@@ -14,10 +14,12 @@ of World of Warcraft using client 1.12.x (in your prefered locale).
 - [x] Provision and configure MariaDB
 - [x] Provision Vanilla WoW authentication server
 - [x] Configure authentication server on startup
-- [ ] Provision authentication database and content on startup
+- [x] Provision authentication database on startup
 - [x] Provision Vanilla WoW game world server
 - [x] Configure game world server on startup
-- [ ] Provision game world database and content on startup
+- [x] Provision game world database on startup
+- [x] Provision character database on startup
+- [ ] Extract required data from Vanilla Wow game client on startup
 
 ## Docker images
 
