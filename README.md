@@ -58,6 +58,14 @@ simple:
 docker-compose up -d
 ```
 
+When shutting down the containers, we recommend to also prune any created
+volumes, as this avoids issues with importing the base data into MariaDB:
+
+```bash
+docker-compose down
+docker volume prune -f
+```
+
 [wow-1]: http://blizzard.com/games/wow/
 [docker]: https://docs.docker.com/install/
 [docker-compose]: https://docs.docker.com/compose/install/
