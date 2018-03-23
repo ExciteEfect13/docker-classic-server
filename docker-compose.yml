@@ -49,6 +49,7 @@ services:
         networks:
             - wowstack
         volumes:
+            - "./path/to/wow/client:/opt/wowstack/data/"
             - "./data/wowstack:/opt/wowstack/share"
 
     world_server:
