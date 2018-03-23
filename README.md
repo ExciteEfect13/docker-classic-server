@@ -87,7 +87,6 @@ docker volume prune -f
 
 ```bash
 $ docker run \
-    -e WOWSTACK_APP_NAME=classic-server \
     -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
     -v `pwd`/data/wowstack:/opt/wowstack/share \
     -it \
@@ -99,7 +98,6 @@ $ docker run \
 
 ```bash
 $ docker run \
-    -e WOWSTACK_APP_NAME=classic-server \
     -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
     -v `pwd`/data/wowstack:/opt/wowstack/share \
     -it \
@@ -111,7 +109,6 @@ $ docker run \
 
 ```bash
 $ docker run \
-    -e WOWSTACK_APP_NAME=classic-server \
     -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
     -v `pwd`/data/wowstack:/opt/wowstack/share \
     -it \
@@ -123,7 +120,6 @@ $ docker run \
 
 ```bash
 $ docker run \
-    -e WOWSTACK_APP_NAME=classic-server \
     -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
     -v `pwd`/data/wowstack:/opt/wowstack/share \
     -it \

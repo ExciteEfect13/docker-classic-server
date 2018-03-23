@@ -25,7 +25,6 @@ services:
         image: wowstack/auth-server:latest
         restart: on-failure
         environment:
-            - "WOWSTACK_APP_NAME=classic-server"
             - "WOWSTACK_AUTH_DB_HOST=mariadb"
             - "WOWSTACK_AUTH_DB_PORT=3306"
             - "WOWSTACK_AUTH_DB_USERNAME=wowstack"
@@ -45,8 +44,6 @@ services:
     map_extractors:
         image: wowstack/map-tools:latest
         restart: on-failure
-        environment:
-            - "WOWSTACK_APP_NAME=classic-server"
         networks:
             - wowstack
         volumes:
@@ -56,7 +53,6 @@ services:
         image: wowstack/world-server:latest
         restart: on-failure
         environment:
-            - "WOWSTACK_APP_NAME=classic-server"
             - "WOWSTACK_AUTH_DB_HOST=mariadb"
             - "WOWSTACK_AUTH_DB_PORT=3306"
             - "WOWSTACK_AUTH_DB_USERNAME=wowstack"
