@@ -42,6 +42,16 @@ services:
         volumes:
         - "wowstack_auth_config:/opt/wowstack/etc"
 
+    map_extractors:
+        image: wowstack/map-tools:latest
+        restart: on-failure
+        environment:
+            - "WOWSTACK_APP_NAME=classic-server"
+        networks:
+            - wowstack
+        volumes:
+            - "./data/wowstack:/opt/wowstack/share"
+
     world_server:
         image: wowstack/world-server:latest
         restart: on-failure
@@ -68,6 +78,7 @@ services:
             - "WOWSTACK_CHAR_DB_DATABASE=wowstack"
         depends_on:
             - mariadb
+            - map_extractors
             - auth_server
         ports:
             - "8085:8085"

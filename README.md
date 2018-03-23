@@ -11,6 +11,12 @@ of World of Warcraft using client 1.12.x (in your prefered locale).
 
 ## TODO: Work in progress
 
+- [ ] Extract required data from Vanilla Wow game client on startup
+
+See **notes** below for manual map extraction!
+
+## DONE: Work completed
+
 - [x] Provision and configure MariaDB
 - [x] Provision Vanilla WoW authentication server
 - [x] Configure authentication server on startup
@@ -19,7 +25,6 @@ of World of Warcraft using client 1.12.x (in your prefered locale).
 - [x] Configure game world server on startup
 - [x] Provision game world database on startup
 - [x] Provision character database on startup
-- [ ] Extract required data from Vanilla Wow game client on startup
 
 ## Docker images
 
@@ -66,6 +71,64 @@ volumes, as this avoids issues with importing the base data into MariaDB:
 ```bash
 docker-compose down
 docker volume prune -f
+```
+
+## Extracting Vanilla WoW client data manually
+
+**Take note** to a few things here:
+
+- `-v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data` is passed on to
+  supply the container with the Vanilla World of Warcraft game installation. Pass
+  in the _base_ directory, e.g. `C:/World\ of\ Warcraft` or `$HOME/WoW-enGB`
+- ```-v `pwd`/data/wowstack:/opt/wowstack/share``` is passed in as output directory
+  for generated files. This directory is then mounted to the world server.
+
+### Camera, DBC and map files extraction
+
+```bash
+$ docker run \
+    -e WOWSTACK_APP_NAME=classic-server \
+    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
+    -v `pwd`/data/wowstack:/opt/wowstack/share \
+    -it \
+    --rm wowstack/map-tools:latest \
+    sh -c '/opt/wowstack/bin/map-extractor --help'
+```
+
+### Height map files extraction
+
+```bash
+$ docker run \
+    -e WOWSTACK_APP_NAME=classic-server \
+    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
+    -v `pwd`/data/wowstack:/opt/wowstack/share \
+    -it \
+    --rm wowstack/map-tools:latest \
+    sh -c '/opt/wowstack/bin/vmap-extractor --help'
+```
+
+### Height map files assembly
+
+```bash
+$ docker run \
+    -e WOWSTACK_APP_NAME=classic-server \
+    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
+    -v `pwd`/data/wowstack:/opt/wowstack/share \
+    -it \
+    --rm wowstack/map-tools:latest \
+    sh -c '/opt/wowstack/bin/vmap-assembler --help'
+```
+
+### Movement map generation
+
+```bash
+$ docker run \
+    -e WOWSTACK_APP_NAME=classic-server \
+    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
+    -v `pwd`/data/wowstack:/opt/wowstack/share \
+    -it \
+    --rm wowstack/map-tools:latest \
+    sh -c '/opt/wowstack/bin/mmap-generator --help'
 ```
 
 [wow-1]: http://blizzard.com/games/wow/
