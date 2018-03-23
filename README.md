@@ -9,34 +9,6 @@ Now things are easier. This provides a containerized environment for running
 a full environment supporting Vanilla WoW, and allows enjoying a long-gone game
 of World of Warcraft using client 1.12.x (in your prefered locale).
 
-## TODO: Work in progress
-
-- [ ] Extract required data from Vanilla Wow game client on startup
-
-See **notes** below for manual map extraction!
-
-## DONE: Work completed
-
-- [x] Provision and configure MariaDB
-- [x] Provision Vanilla WoW authentication server
-- [x] Configure authentication server on startup
-- [x] Provision authentication database on startup
-- [x] Provision Vanilla WoW game world server
-- [x] Configure game world server on startup
-- [x] Provision game world database on startup
-- [x] Provision character database on startup
-
-## Docker images
-
-All Docker images are available on the Docker Hub, and updated frequently.
-
-- [Map tools](https://hub.docker.com/r/wowstack/map-tools/)
-- [Authentication server](https://hub.docker.com/r/wowstack/auth-server/)
-- [Game World server](https://hub.docker.com/r/wowstack/world-server/)
-
-Since this is a work in progress project, we highly recommend to frequently
-run `docker-compose pull` before running the containers (at least weekly).
-
 ## Requirements
 
 Since this is all prebuilt and updated by us, all you have to worry about is
@@ -83,49 +55,29 @@ docker volume prune -f
 - ```-v `pwd`/data/wowstack:/opt/wowstack/share``` is passed in as output directory
   for generated files. This directory is then mounted to the world server.
 
-### Camera, DBC and map files extraction
-
 ```bash
 $ docker run \
+    --name wow_map_generation \
+    -e WOWSTACK_FORCE_REBUILD=no \
     -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
     -v `pwd`/data/wowstack:/opt/wowstack/share \
-    -it \
-    --rm wowstack/map-tools:latest \
-    sh -c '/opt/wowstack/bin/map-extractor --help'
+    -d wowstack/map-tools:latest
 ```
 
-### Height map files extraction
+This process might take a few hours to complete. Setting `WOWSTACK_FORCE_REBUILD`
+to `yes` will trigger regeneration of all data even if there already are files
+from previous runs.
 
-```bash
-$ docker run \
-    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
-    -v `pwd`/data/wowstack:/opt/wowstack/share \
-    -it \
-    --rm wowstack/map-tools:latest \
-    sh -c '/opt/wowstack/bin/vmap-extractor --help'
-```
+## Docker images
 
-### Height map files assembly
+All Docker images are available on the Docker Hub, and updated frequently.
 
-```bash
-$ docker run \
-    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
-    -v `pwd`/data/wowstack:/opt/wowstack/share \
-    -it \
-    --rm wowstack/map-tools:latest \
-    sh -c '/opt/wowstack/bin/vmap-assembler --help'
-```
+- [Map tools](https://hub.docker.com/r/wowstack/map-tools/)
+- [Authentication server](https://hub.docker.com/r/wowstack/auth-server/)
+- [Game World server](https://hub.docker.com/r/wowstack/world-server/)
 
-### Movement map generation
-
-```bash
-$ docker run \
-    -v $HOME/Applications/World\ of\ Warcraft:/opt/wowstack/data \
-    -v `pwd`/data/wowstack:/opt/wowstack/share \
-    -it \
-    --rm wowstack/map-tools:latest \
-    sh -c '/opt/wowstack/bin/mmap-generator --help'
-```
+Since this is a work in progress project, we highly recommend to frequently
+run `docker-compose pull` before running the containers (at least weekly).
 
 [wow-1]: http://blizzard.com/games/wow/
 [docker]: https://docs.docker.com/install/

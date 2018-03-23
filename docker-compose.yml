@@ -44,6 +44,8 @@ services:
     map_extractors:
         image: wowstack/map-tools:latest
         restart: on-failure
+        environment:
+            - "WOWSTACK_FORCE_REBUILD=no"
         networks:
             - wowstack
         volumes:
