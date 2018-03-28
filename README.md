@@ -17,6 +17,8 @@ having [Docker][docker] and [Docker Compose][docker-compose] installed.
 Feel free to use Docker for Mac OS, Docker for Windows or Docker for Linux,
 all work the same.
 
+**Docker Engine 1.13 or newer is required**.
+
 ## Usage
 
 First - to reduce initial start times - pull all Docker containers required by
