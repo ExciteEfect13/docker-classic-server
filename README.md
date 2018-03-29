@@ -1,13 +1,13 @@
 # WowStack: a dockerized Vanilla WoW environment
 
-**WARNING**: this is a work in progress environment and _may_ fail to work.
-
 Running [Vanilla Wow][wow-1] can be quite the drag if compiling and maintaining
 a moving Open Source project is not your forté.
 
 Now things are easier. This provides a containerized environment for running
 a full environment supporting Vanilla WoW, and allows enjoying a long-gone game
 of World of Warcraft using client 1.12.x (in your prefered locale).
+
+We now have a [FAQ](FAQ.md) up, answering some of the questions we received.
 
 ## Requirements
 
