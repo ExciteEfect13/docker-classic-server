@@ -21,8 +21,10 @@ all work the same.
 
 ## Usage
 
-First - to reduce initial start times - pull all Docker containers required by
-executing:
+Copy `.env.dist` to `.env` and cutomize the settings to your liking or leave
+them as is for default behaviour.
+
+To reduce initial start times  pull all Docker containers required by executing:
 
 ```bash
 docker-compose pull

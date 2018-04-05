@@ -14,3 +14,6 @@ Thumbs.db
 # Project files
 .idea/
 .vscode/
+
+# Configuration files
+.env

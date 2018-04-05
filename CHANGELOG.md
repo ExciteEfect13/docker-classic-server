@@ -4,6 +4,7 @@ Items starting with `DEPRECATION` are important deprecation notices.
 
 ## Unreleased
 
+- [Fixed] use of `.env` file
 - [Added] map extraction and generation process
 - [Added] Vanilla WoW game world server
 - [Added] initial Docker environment

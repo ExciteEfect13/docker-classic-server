@@ -6,10 +6,10 @@ services:
         image: mariadb:10.1
         restart: on-failure
         environment:
-            - "MYSQL_RANDOM_ROOT_PASSWORD=yes"
-            - "MYSQL_USER=wowstack"
-            - "MYSQL_PASSWORD=p4ssw0rd"
-            - "MYSQL_DATABASE=wowstack"
+            - MYSQL_RANDOM_ROOT_PASSWORD=${MYSQL_RANDOM_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
             interval: 1m30s
@@ -25,17 +25,17 @@ services:
         image: wowstack/auth-server:latest
         restart: on-failure
         environment:
-            - "WOWSTACK_AUTH_DB_HOST=mariadb"
-            - "WOWSTACK_AUTH_DB_PORT=3306"
-            - "WOWSTACK_AUTH_DB_USERNAME=wowstack"
-            - "WOWSTACK_AUTH_DB_PASSWORD=p4ssw0rd"
-            - "WOWSTACK_AUTH_DB_DATABASE=wowstack"
-            - "WOWSTACK_AUTH_BIND_IP=0.0.0.0"
-            - "WOWSTACK_AUTH_BIND_PORT=3724"
+            - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
+            - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
+            - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
+            - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
+            - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
+            - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
+            - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
         depends_on:
             - mariadb
         ports:
-            - "3724:3724"
+            - ${WOWSTACK_AUTH_BIND_PORT}:3724
         networks:
             - wowstack
         volumes:
@@ -45,7 +45,7 @@ services:
         image: wowstack/map-tools:latest
         restart: on-failure
         environment:
-            - "WOWSTACK_FORCE_REBUILD=no"
+            - WOWSTACK_FORCE_REBUILD=${WOWSTACK_FORCE_REBUILD}
         networks:
             - wowstack
         volumes:
@@ -56,31 +56,31 @@ services:
         image: wowstack/world-server:latest
         restart: on-failure
         environment:
-            - "WOWSTACK_AUTH_DB_HOST=mariadb"
-            - "WOWSTACK_AUTH_DB_PORT=3306"
-            - "WOWSTACK_AUTH_DB_USERNAME=wowstack"
-            - "WOWSTACK_AUTH_DB_PASSWORD=p4ssw0rd"
-            - "WOWSTACK_AUTH_DB_DATABASE=wowstack"
-            - "WOWSTACK_AUTH_BIND_IP=0.0.0.0"
-            - "WOWSTACK_AUTH_BIND_PORT=3724"
-            - "WOWSTACK_WORLD_DB_HOST=mariadb"
-            - "WOWSTACK_WORLD_DB_PORT=3306"
-            - "WOWSTACK_WORLD_DB_USERNAME=wowstack"
-            - "WOWSTACK_WORLD_DB_PASSWORD=p4ssw0rd"
-            - "WOWSTACK_WORLD_DB_DATABASE=wowstack"
-            - "WOWSTACK_WORLD_BIND_IP=0.0.0.0"
-            - "WOWSTACK_WORLD_BIND_PORT=8085"
-            - "WOWSTACK_CHAR_DB_HOST=mariadb"
-            - "WOWSTACK_CHAR_DB_PORT=3306"
-            - "WOWSTACK_CHAR_DB_USERNAME=wowstack"
-            - "WOWSTACK_CHAR_DB_PASSWORD=p4ssw0rd"
-            - "WOWSTACK_CHAR_DB_DATABASE=wowstack"
+            - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
+            - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
+            - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
+            - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
+            - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
+            - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
+            - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
+            - WOWSTACK_WORLD_DB_HOST=${WOWSTACK_WORLD_DB_HOST}
+            - WOWSTACK_WORLD_DB_PORT=${WOWSTACK_WORLD_DB_PORT}
+            - WOWSTACK_WORLD_DB_USERNAME=${WOWSTACK_WORLD_DB_USERNAME}
+            - WOWSTACK_WORLD_DB_PASSWORD=${WOWSTACK_WORLD_DB_PASSWORD}
+            - WOWSTACK_WORLD_DB_DATABASE=${WOWSTACK_WORLD_DB_DATABASE}
+            - WOWSTACK_WORLD_BIND_IP=${WOWSTACK_WORLD_BIND_IP}
+            - WOWSTACK_WORLD_BIND_PORT=${WOWSTACK_WORLD_BIND_PORT}
+            - WOWSTACK_CHAR_DB_HOST=${WOWSTACK_CHAR_DB_HOST}
+            - WOWSTACK_CHAR_DB_PORT=${WOWSTACK_CHAR_DB_PORT}
+            - WOWSTACK_CHAR_DB_USERNAME=${WOWSTACK_CHAR_DB_USERNAME}
+            - WOWSTACK_CHAR_DB_PASSWORD=${WOWSTACK_CHAR_DB_PASSWORD}
+            - WOWSTACK_CHAR_DB_DATABASE=${WOWSTACK_CHAR_DB_DATABASE}
         depends_on:
             - mariadb
             - map_extractors
             - auth_server
         ports:
-            - "8085:8085"
+            - ${WOWSTACK_WORLD_BIND_PORT}:8085
         networks:
             - wowstack
         volumes:
