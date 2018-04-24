@@ -26,7 +26,7 @@ them as is for default behaviour.
 
 To reduce initial start times  pull all Docker containers required by executing:
 
-```bash
+```console
 docker-compose pull
 ```
 
@@ -37,14 +37,14 @@ container to house the game content during runtime.
 As with any composed Docker environment, running the Vanilla WoW environment is
 simple:
 
-```bash
+```console
 docker-compose up -d
 ```
 
 When shutting down the containers, we recommend to also prune any created
 volumes, as this avoids issues with importing the base data into MariaDB:
 
-```bash
+```console
 docker-compose down
 docker volume prune -f
 ```
@@ -59,7 +59,7 @@ docker volume prune -f
 - ```-v `pwd`/data/wowstack:/opt/wowstack/share``` is passed in as output directory
   for generated files. This directory is then mounted to the world server.
 
-```bash
+```console
 $ docker run \
     --name wow_map_generation \
     -e WOWSTACK_FORCE_REBUILD=no \
