@@ -4,6 +4,7 @@ Items starting with `DEPRECATION` are important deprecation notices.
 
 ## Unreleased
 
+- [Added] git commit journal configuration
 - [Fixed] use of `.env` file
 - [Added] map extraction and generation process
 - [Added] Vanilla WoW game world server
