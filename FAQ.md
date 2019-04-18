@@ -24,7 +24,6 @@ been swapped out with modern code, lots of the usual segmentation faults have
 been resolved. Apart from being rather stable, WowStack includes e.g.:
 
 - full support for cheat detection via Warden
-- scripting via Lua 5.3
 - user facing features such as
     - character name validation using the original rules for Vanilla WoW
     - working lag compensation
@@ -32,11 +31,29 @@ been resolved. Apart from being rather stable, WowStack includes e.g.:
   cross-faction communication, grouping, etc.
 - improved use of original client data for data validation
 
+**Q: How do I log in to the realm?**
+
+**A:**: by default the system comes with a set of default accounts to demo all
+available access levels:
+
+The provided users are
+
+- `ADMINISTRATOR` with password `ADMINISTRATOR`
+- `GAMEMASTER` with password `GAMEMASTER`
+- `MODERATOR` with password `MODERATOR`
+- `PLAYER` with password `PLAYER`
+
+**Q: How do I configure IP addresses?**
+
+**A:** Currently you can provide IP addesses for login and world server. Using
+`WOWSTACK_AUTH_BIND_IP` for the login server and `WOWSTACK_WORLD_BIND_IP` for
+the world server, you should supply an IP address that is reachable either on
+your host only or on your network if you want other players to connect.
+
 **Q: Will you release the sources?**
 
 **A:** The source code is licensed under the terms of the GNU AGPL 3.0 and will
-be released on Github in the future as soon as we reach a state we're satisfied
-with.
+be available on [Github][wowstack-classic-server].
 
 **Q: Can I join the team?**
 
@@ -47,3 +64,4 @@ crazy side, shoot an [email to us](mailto:support+team@wowstack.io).
 [mangos-zero]: https://github.com/mangoszero/server
 [cmangos-classic]: https://github.com/cmangos/mangos-classic
 [trinity-wotlk]: https://github.com/TrinityCore/TrinityCore/tree/3.3.5
+[wowstack-classic-server]: https://github.com/wowstack/classic-server

@@ -4,6 +4,7 @@ Items starting with `DEPRECATION` are important deprecation notices.
 
 ## Unreleased
 
+- [Improved] FAQ
 - [Added] Discord chat and Patreon link to README
 - [Added] git commit journal configuration
 - [Fixed] use of `.env` file
