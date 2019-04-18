@@ -1,4 +1,4 @@
-# WowStack: a dockerized Vanilla WoW environment
+# WowStack: a container-based Vanilla WoW environment
 
 Running [Vanilla Wow][wow-1] can be quite the drag if compiling and maintaining
 a moving Open Source project is not your forté.
@@ -9,6 +9,13 @@ of World of Warcraft using client 1.12.x (in your prefered locale).
 
 We now have a [FAQ](FAQ.md) up, answering some of the questions we received.
 
+## Support
+
+Meanwhile we are on [Discord][discord], so come chat with us.
+
+Like our work and want to show appreciation? Give the repository a star, visit
+our [Patreon][patreon] and become an supporter. :heart_eyes:
+
 ## Requirements
 
 Since this is all prebuilt and updated by us, all you have to worry about is
@@ -17,7 +24,8 @@ having [Docker][docker] and [Docker Compose][docker-compose] installed.
 Feel free to use Docker for Mac OS, Docker for Windows or Docker for Linux,
 all work the same.
 
-**Docker Engine 1.13 or newer is required**.
+- A Docker CE/EE runtime, version 18.02 or newer
+- Docker Compose, version 1.24.0 or newer
 
 ## Usage
 
@@ -83,6 +91,10 @@ All Docker images are available on the Docker Hub, and updated frequently.
 Since this is a work in progress project, we highly recommend to frequently
 run `docker-compose pull` before running the containers (at least weekly).
 
-[wow-1]: http://blizzard.com/games/wow/
 [docker]: https://docs.docker.com/install/
 [docker-compose]: https://docs.docker.com/compose/install/
+
+[wowstack]: https://wowstack.io/
+[wow-1]: http://blizzard.com/games/wow/
+[discord]: https://discord.gg/TttsRMp
+[patreon]: https://www.patreon.com/wowstack
