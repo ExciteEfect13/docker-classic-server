@@ -97,4 +97,4 @@ run `docker-compose pull` before running the containers (at least weekly).
 [wowstack]: https://wowstack.io/
 [wow-1]: http://blizzard.com/games/wow/
 [discord]: https://discord.gg/TttsRMp
-[patreon]: https://www.patreon.com/wowstack
+[patreon]: https://www.patreon.com/bePatron?u=10897042
