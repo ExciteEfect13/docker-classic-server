@@ -11,10 +11,12 @@ We now have a [FAQ](FAQ.md) up, answering some of the questions we received.
 
 ## Support
 
-Meanwhile we are on [Discord][discord], so come chat with us.
+Meanwhile we are on [Discord][discord-url], so come chat with us.
 
 Like our work and want to show appreciation? Give the repository a star, visit
-our [Patreon][patreon] and become an supporter. :heart_eyes:
+our [Patreon][patreon-url] and become an supporter. :heart_eyes:
+
+[![Become a patreon][patreon-image]][patreon-url]
 
 ## Requirements
 
@@ -96,5 +98,10 @@ run `docker-compose pull` before running the containers (at least weekly).
 
 [wowstack]: https://wowstack.io/
 [wow-1]: http://blizzard.com/games/wow/
-[discord]: https://discord.gg/TttsRMp
-[patreon]: https://www.patreon.com/bePatron?u=10897042
+
+[patreon-image]: https://c5.patreon.com/external/logo/become_a_patron_button.png
+[patreon-url]: https://www.patreon.com/bePatron?u=10897042
+[discord-url]: https://discord.gg/TttsRMp
+
+[license]: https://choosealicense.com/licenses/agpl-3.0/
+[blizzard]: http://blizzard.com/
