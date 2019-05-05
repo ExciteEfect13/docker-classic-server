@@ -31,16 +31,12 @@ all work the same.
 
 ## Usage
 
-Copy `.env.dist` to `.env` and cutomize the settings to your liking or leave
-them as is for default behaviour.
-
-To reduce initial start times  pull all Docker containers required by executing:
-
 ```console
-docker-compose pull
+cp .env.dist .env   # Cutomize these settings to your liking or leave as-is
+docker-compose pull # Doing this seperate will reduce initial start time
 ```
 
-This will retrieve the WowStack containers for map data, the authentication
+The above will retrieve the WowStack containers for map data, the authentication
 server, and the game world server. To support this, we will also pull a MariaDB
 container to house the game content during runtime.
 
