@@ -49,7 +49,7 @@ services:
         networks:
             - wowstack
         volumes:
-            - "./path/to/wow/client:/opt/wowstack/data/"
+            - "/home/daniel/.cxoffice/WoW-1.12/drive_c/Program\ Files\ (x86)/World\ of\ Warcraft/:/opt/wowstack/data/"
             - "./data/wowstack:/opt/wowstack/share"
 
     world_server:
