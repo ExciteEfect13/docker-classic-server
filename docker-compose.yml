@@ -1,100 +1,110 @@
-version: '3.1'
+version: "3.1"
 
 services:
+  mariadb:
+    image: mariadb:10.1
+    restart: on-failure
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=${MYSQL_RANDOM_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "-u",
+          $MYSQL_USER,
+          "-p",
+          $MYSQL_PASSWORD,
+        ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 10
+    networks:
+      - wowstack
+    volumes:
+      - "mariadb_data:/var/lib/mysql"
+      - "./data/mariadb:/docker-entrypoint-initdb.d"
 
-    mariadb:
-        image: mariadb:10.1
-        restart: on-failure
-        environment:
-            - MYSQL_RANDOM_ROOT_PASSWORD=${MYSQL_RANDOM_ROOT_PASSWORD}
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_USER=${MYSQL_USER}
-        healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", '-u', $MYSQL_USER, '-p', $MYSQL_PASSWORD]
-            interval: 1m30s
-            timeout: 30s
-            retries: 10
-        networks:
-            - wowstack
-        volumes:
-            - "mariadb_data:/var/lib/mysql"
-            - "./data/mariadb:/docker-entrypoint-initdb.d"
+  auth_server:
+    image: wowstack/auth-server:latest
+    restart: on-failure
+    environment:
+      - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
+      - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
+      - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
+      - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
+      - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
+      - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
+      - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
+    depends_on:
+      - mariadb
+    ports:
+      - ${WOWSTACK_AUTH_BIND_PORT}:3724
+    networks:
+      - wowstack
+    volumes:
+      - "wowstack_auth_config:/opt/wowstack/etc"
 
-    auth_server:
-        image: wowstack/auth-server:latest
-        restart: on-failure
-        environment:
-            - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
-            - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
-            - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
-            - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
-            - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
-            - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
-            - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
-        depends_on:
-            - mariadb
-        ports:
-            - ${WOWSTACK_AUTH_BIND_PORT}:3724
-        networks:
-            - wowstack
-        volumes:
-        - "wowstack_auth_config:/opt/wowstack/etc"
+  map_extractors:
+    image: wowstack/map-tools:latest
+    restart: on-failure
+    environment:
+      - WOWSTACK_FORCE_REBUILD=${WOWSTACK_FORCE_REBUILD}
+    networks:
+      - wowstack
+    volumes:
+      - "/home/daniel/.cxoffice/WoW-1.12/drive_c/Program\ Files\ (x86)/World\ of\ Warcraft/:/opt/wowstack/data/"
+      - "./data/wowstack:/opt/wowstack/share"
 
-    map_extractors:
-        image: wowstack/map-tools:latest
-        restart: on-failure
-        environment:
-            - WOWSTACK_FORCE_REBUILD=${WOWSTACK_FORCE_REBUILD}
-        networks:
-            - wowstack
-        volumes:
-            - "/home/daniel/.cxoffice/WoW-1.12/drive_c/Program\ Files\ (x86)/World\ of\ Warcraft/:/opt/wowstack/data/"
-            - "./data/wowstack:/opt/wowstack/share"
-
-    world_server:
-        image: wowstack/world-server:latest
-        restart: on-failure
-        environment:
-            - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
-            - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
-            - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
-            - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
-            - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
-            - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
-            - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
-            - WOWSTACK_WORLD_DB_HOST=${WOWSTACK_WORLD_DB_HOST}
-            - WOWSTACK_WORLD_DB_PORT=${WOWSTACK_WORLD_DB_PORT}
-            - WOWSTACK_WORLD_DB_USERNAME=${WOWSTACK_WORLD_DB_USERNAME}
-            - WOWSTACK_WORLD_DB_PASSWORD=${WOWSTACK_WORLD_DB_PASSWORD}
-            - WOWSTACK_WORLD_DB_DATABASE=${WOWSTACK_WORLD_DB_DATABASE}
-            - WOWSTACK_WORLD_BIND_IP=${WOWSTACK_WORLD_BIND_IP}
-            - WOWSTACK_WORLD_BIND_PORT=${WOWSTACK_WORLD_BIND_PORT}
-            - WOWSTACK_CHAR_DB_HOST=${WOWSTACK_CHAR_DB_HOST}
-            - WOWSTACK_CHAR_DB_PORT=${WOWSTACK_CHAR_DB_PORT}
-            - WOWSTACK_CHAR_DB_USERNAME=${WOWSTACK_CHAR_DB_USERNAME}
-            - WOWSTACK_CHAR_DB_PASSWORD=${WOWSTACK_CHAR_DB_PASSWORD}
-            - WOWSTACK_CHAR_DB_DATABASE=${WOWSTACK_CHAR_DB_DATABASE}
-        depends_on:
-            - mariadb
-            - map_extractors
-            - auth_server
-        ports:
-            - ${WOWSTACK_WORLD_BIND_PORT}:8085
-        networks:
-            - wowstack
-        volumes:
-            - "wowstack_world_config:/opt/wowstack/etc"
-            - "./data/wowstack:/opt/wowstack/share"
+  world_server:
+    image: wowstack/world-server:latest
+    restart: on-failure
+    environment:
+      - WOWSTACK_AUTH_DB_HOST=${WOWSTACK_AUTH_DB_HOST}
+      - WOWSTACK_AUTH_DB_PORT=${WOWSTACK_AUTH_DB_PORT}
+      - WOWSTACK_AUTH_DB_USERNAME=${WOWSTACK_AUTH_DB_USERNAME}
+      - WOWSTACK_AUTH_DB_PASSWORD=${WOWSTACK_AUTH_DB_PASSWORD}
+      - WOWSTACK_AUTH_DB_DATABASE=${WOWSTACK_AUTH_DB_DATABASE}
+      - WOWSTACK_AUTH_BIND_IP=${WOWSTACK_AUTH_BIND_IP}
+      - WOWSTACK_AUTH_BIND_PORT=${WOWSTACK_AUTH_BIND_PORT}
+      - WOWSTACK_WORLD_DB_HOST=${WOWSTACK_WORLD_DB_HOST}
+      - WOWSTACK_WORLD_DB_PORT=${WOWSTACK_WORLD_DB_PORT}
+      - WOWSTACK_WORLD_DB_USERNAME=${WOWSTACK_WORLD_DB_USERNAME}
+      - WOWSTACK_WORLD_DB_PASSWORD=${WOWSTACK_WORLD_DB_PASSWORD}
+      - WOWSTACK_WORLD_DB_DATABASE=${WOWSTACK_WORLD_DB_DATABASE}
+      - WOWSTACK_WORLD_BIND_IP=${WOWSTACK_WORLD_BIND_IP}
+      - WOWSTACK_WORLD_BIND_PORT=${WOWSTACK_WORLD_BIND_PORT}
+      - WOWSTACK_CHAR_DB_HOST=${WOWSTACK_CHAR_DB_HOST}
+      - WOWSTACK_CHAR_DB_PORT=${WOWSTACK_CHAR_DB_PORT}
+      - WOWSTACK_CHAR_DB_USERNAME=${WOWSTACK_CHAR_DB_USERNAME}
+      - WOWSTACK_CHAR_DB_PASSWORD=${WOWSTACK_CHAR_DB_PASSWORD}
+      - WOWSTACK_CHAR_DB_DATABASE=${WOWSTACK_CHAR_DB_DATABASE}
+    depends_on:
+      - mariadb
+      - map_extractors
+      - auth_server
+    ports:
+      - ${WOWSTACK_WORLD_BIND_PORT}:8085
+    networks:
+      - wowstack
+    volumes:
+      - "wowstack_world_config:/opt/wowstack/etc"
+      - "./data/wowstack:/opt/wowstack/share"
 
 networks:
-    wowstack:
-        driver: bridge
+  wowstack:
+    driver: bridge
 
 volumes:
-    mariadb_data:
-        driver: local
-    wowstack_auth_config:
-        driver: local
-    wowstack_world_config:
-        driver: local
+  mariadb_data:
+    driver: local
+  wowstack_auth_config:
+    driver: local
+  wowstack_world_config:
+    driver: local
